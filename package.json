@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "ejs": "^2.5.5",
     "express": "^4.14.0",
     "express-favicon": "^2.0.0",
+    "express-stream": "^0.8.0",
     "jQuery": "^1.7.4",
     "jquery": "^3.1.1",
     "jsdom": "^9.8.3",
-    "serve-favicon": "^2.3.2"
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "stream": "0.0.2"
   }
 }

@@ -2,10 +2,9 @@ var express = require("express");
 var bodyParser = require("body-parser"); 
 var favicon = require('serve-favicon'); 
 var fs = require('fs'); 
-var $ = require('jquery'); 
+var request = require('request'); 
 
 var app = express(); 
-
 
 // anything in public can be loaded now 
 app.use(express.static(__dirname + '/public')); 
@@ -23,59 +22,97 @@ app.use(bodyParser.urlencoded({
 // parses as json, the data is now a prop of req.body
 app.use(bodyParser.json());; 
 
+
 // handle the list submit 
-/*app.post('/palace', function(req, res){
-	// TO DO : change th form submit to a jquery post instead
-	// that way we don't necessarily have to redirect..?
-	// nah i really don't know
-	// "i don know!" 
-	// i fixed it its sweet check it out down there v v v <-- those are arrows
+app.post('/list_submit', function(req, res){
+	// global var for use in flickr call
+	var listElem = ''; 
 
 
-	// split the list into array based on newlines 
-	var listElems = req.body.list;
-	listElems = listElems.split('\r\n');
+	// insert flickr here
+	console.log("Starting flickr getting images"); 
+	console.log("with list: \n" + req.body.list + "\n");
+	var listElems = '' + req.body.list; 
+	listElems = listElems.split('\n'); 
 
-	// JQUERY CAN'T GO IN BACKEND PUT IT IN THE HTML AS EVENT WHEN THEY CLICK SUBMIT 
-
-
-	// prepare the json
-	var dataD = {size: listElems.length}
-	for (var i =0; i < listElems.length; i++){
-		dataD["n" + i] = {  
-			listElem: listElems[i],
+	// add '+' for spaces
+	for (var i = 0; i < listElems.length; i++){ 
+		for(var j = 0; j < listElems[i].length; j++){
+			if (listElems[i][j] == ' '){
+				listElems[i][j] = '+'; 
+			}
 		}
 	}
 
-	// throw in the flickr api here 
-	// throw in the fuckr api here
-	for (var i = 0; i < dataD.size; i++){
-		var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=6ddcc51aac317ff8f54371029b81f85e&text=" + dataD["n" + i].listElem + "&sort=relevance&content_type=1&max_upload_date=1478011191";
-		var src;
-		console.log('here1'); 
-		$.getJSON(url + "&format=json&jsoncallback=?", function(data){
-    		$.each(data.photos.photo, function(i,item){
-        		src = "http://farm"+ item.farm +".static.flickr.com/"+ item.server +"/"+ item.id +"_"+ item.secret +"_m.jpg";
-       			console.log('here'); 
-       			$("<img/>").attr("src", src).appendTo("#images");
-       			dataD["n" + i].img_url = src; 
-        		if ( i == 3 ) return false;
-    		});
-		});
-	}	
-	//TO DO: import jquery 
+	palaceData = {size: listElems.length}; 
 
-	// write the list to file on server
-	// its temporary, really...
-	fs.writeFile(__dirname + '/public/data.json', JSON.stringify(dataD, null, 2)); 
-	// this is getting sketchy..
+	for(i = 0; i < palaceData.size; i++){
+		palaceData[i] = {
+			listElem: listElems[i], 
+			img_url: ''
+		}
+	}
 
-	
+	// forget a for loop 
+	// we'll do it recursively to deal with the asynchronous calls to flickr
+	function getURL(i){
+		if( i < listElems.length){
+			listElem = '' + listElems[i]; 
 
-	// change this to res.render(send em to the place with the google maps(the crazy place!!_))
-	// i'll change it later i sweear
-	res.sendFile(__dirname + '/palace.html'); 
-});*/ 
+			var url = "https://api.flickr.com" + 
+			"/services/rest/?method=flickr.photos.search&" + 
+			"api_key=6ddcc51aac317ff8f54371029b81f85e&text=" 
+			+ listElem + 
+			"&sort=relevance&content_type=1&" + 
+			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
+
+
+			// use request to do this whoops 
+			console.log("making request for: " + listElem); 
+			request({
+				url: url, 
+				json: true
+			}, function(error, response, body){
+				if (!error && response.statusCode == 200){ 
+					console.log("success!"); 
+					var photo = body.photos.photo[0]; 
+					var img_url = "http://farm" + photo.farm + 
+					".static.flickr.com/" + photo.server + 
+					"/" + photo.id + "_" + photo.secret + 
+					"_m.jpg"; 
+					
+
+					// TO DO: can't concatenate listELem as string
+					// freaks out when logged with other string literals
+
+					console.log(img_url); 
+
+					// recurse
+					console.log("\nrecursing\n"); 
+					getURL(i + 1); 
+				}
+			});
+		}
+		else{
+			console.log("all done!~\n"); 
+
+			// send to palace here  
+
+		}
+
+	}
+
+
+	// first call
+	getURL(0);  
+	//make a loading page while the urls are got 
+	var stream = fs.createReadStream(__dirname + '/palace.html'); 
+	stream.pipe(res); 
+	// add event handlers
+
+});
+
+
 
 // get '/' 
 // ie first thing they see when they go to the domain 
