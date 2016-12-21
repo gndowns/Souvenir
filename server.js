@@ -96,7 +96,8 @@ app.post('/list_submit', function(req, res){
 		else{
 			console.log("all done!~\n"); 
 
-			// send to palace here  
+			// send to palace here 
+			res.sendFile(__dirname + '/palace.html');  
 
 		}
 
@@ -105,10 +106,6 @@ app.post('/list_submit', function(req, res){
 
 	// first call
 	getURL(0);  
-	//make a loading page while the urls are got 
-	var stream = fs.createReadStream(__dirname + '/palace.html'); 
-	stream.pipe(res); 
-	// add event handlers
 
 });
 
