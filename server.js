@@ -23,6 +23,17 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());; 
 
 
+// I guess we'll do the views 
+// plain html tho, we'll learn jade later
+app.set('views', __dirname + '/views'); 
+app.engine('html', require('ejs').renderFile); 
+app.set('view engine', 'ejs'); 
+
+
+
+
+
+
 // handle the list submit 
 app.post('/list_submit', function(req, res){
 	// global var for use in flickr call
@@ -80,6 +91,8 @@ app.post('/list_submit', function(req, res){
 					".static.flickr.com/" + photo.server + 
 					"/" + photo.id + "_" + photo.secret + 
 					"_m.jpg"; 
+
+					palaceData[i].img_url = img_url; 
 					
 
 					// TO DO: can't concatenate listELem as string
@@ -95,10 +108,10 @@ app.post('/list_submit', function(req, res){
 		}
 		else{
 			console.log("all done!~\n"); 
+			console.log(palaceData); 
 
 			// send to palace here 
-			res.sendFile(__dirname + '/palace.html');  
-
+			res.render('palace.html', {palceData: palaceData});   
 		}
 
 	}
@@ -114,7 +127,7 @@ app.post('/list_submit', function(req, res){
 // get '/' 
 // ie first thing they see when they go to the domain 
 app.get('/', function(req, res){
-	res.sendFile(__dirname + '/' + 'index.html'); 
+	res.render('index.html'); 
 });
 
 app.listen(3000, function(){
