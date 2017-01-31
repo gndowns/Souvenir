@@ -44,7 +44,7 @@ app.post('/list_submit', function(req, res){
 	console.log("Starting flickr getting images"); 
 	console.log("with list: \n" + req.body.list + "\n");
 	var listElems = '' + req.body.list; 
-	listElems = listElems.split('\n'); 
+	listElems = listElems.split('\r\n'); 
 
 	// add '+' for spaces
 	for (var i = 0; i < listElems.length; i++){ 
@@ -107,11 +107,11 @@ app.post('/list_submit', function(req, res){
 			});
 		}
 		else{
-			console.log("all done!~\n"); 
+			console.log("all done!~\n");  
 			console.log(palaceData); 
 
 			// send to palace here 
-			res.render('palace.html', {palceData: palaceData});   
+			res.render('palace.html', {palaceData: palaceData});   
 		}
 
 	}

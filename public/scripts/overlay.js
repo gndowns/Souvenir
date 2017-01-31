@@ -14,17 +14,27 @@ You are free to use and modify this code provided that you:
 var svo = null;
 
 // the main application object
-function SVO()
+function SVO(LAT, LNG)
 {
     // Trafalgar Square
-    this.lat = 51.507768;
-    this.lng = -0.127957;
+    //     this.lat = 51.507768;
+
+    // this is where the image is 
+    this.lat = LAT;
+    this.lng = LNG;
     this.zoom = 16;
 
+
+    //    this.slat = 51.507527;
+    // this is where you are 
     this.slat = 51.507527;
     this.slng = -0.128652;
 
-    this.image = IMAGE;
+    // dynamically assign images 
+    for(var i = 0; i < pData.size; i++){
+        this["image" + i] = pData[i].img_url; 
+    }
+
 
     this.pt = new google.maps.LatLng(this.lat, this.lng);
     this.streetPt = new google.maps.LatLng(this.slat, this.slng);
@@ -66,7 +76,7 @@ SVO.prototype.m_initMap = function ()
 
 
 // create street view
-SVO.prototype.m_initPanorama = function ()
+SVO.prototype.m_initPanorama = function (i)
 {
     var visible = false;
     var l_panDiv = eid("panDiv");
@@ -86,27 +96,34 @@ SVO.prototype.m_initPanorama = function ()
         zoom: this.szoom
     };
 
-    pan = new google.maps.StreetViewPanorama(l_panDiv, l_panOptions);
-
-    map.setStreetView(pan);
+    // create new panorama only if first pass 
+    if(i == 0){
+        pan = new google.maps.StreetViewPanorama(l_panDiv, l_panOptions);
+        map.setStreetView(pan);
+    }
 
     // event handlers    
     google.maps.event.addListener(pan, 'pov_changed', function ()
     {
-        svo.m_updateMarker();
+        console.log('updating pov ' + i); 
+        svo.m_updateMarker(i);
     });
 
     google.maps.event.addListener(pan, 'zoom_changed', function ()
     {
-        svo.m_updateMarker();
+        console.log('updating zoom ' + i); 
+        svo.m_updateMarker(i);
     });
 
     google.maps.event.addListener(pan, 'position_changed', function ()
     {
+        console.log('updating position ' + i ); 
+
+        // your position 
         svo.streetPt = pan.getPosition();
         map.setCenter(svo.streetPt);
 
-        svo.m_updateMarker();
+        svo.m_updateMarker(i);
     });
 
 }
@@ -148,20 +165,41 @@ SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom)
 }
 
 // create the 'marker' (a div containing an image which can be clicked)
-SVO.prototype.m_initMarker = function ()
+SVO.prototype.m_initMarker = function (i)
 {
-    var l_markerDiv = eid("markerDiv");
+    var whichDiv = ""; 
+    var whichIMG = "";
+    if(i == 0){
+        whichDiv = "markerDiv0";
+        whichIMG = this["image" + 0];  
+    }
+    if(i == 1){
+        whichDiv = "markerDiv1";
+        whichIMG = this["image" + 1];  
+    }
+
+    var l_markerDiv = eid(whichDiv);
     l_markerDiv.style.width = this.markerWidth + "px";
     l_markerDiv.style.height = this.markerHeight + "px";
 
-    var l_iconDiv = eid("markerDiv");
-    l_iconDiv.innerHTML = "<img src='" + this.image + "' width='100%' height='100%' alt='' />";
+    var l_iconDiv = eid(whichDiv);
+    l_iconDiv.innerHTML = "<img src='" + whichIMG + "' width='100%' height='100%' alt='' />";
 
-    this.m_updateMarker();
+    this.m_updateMarker(i);
 }
 
-SVO.prototype.m_updateMarker = function ()
+
+SVO.prototype.m_updateMarker = function (i)
 {
+    var whichDiv = "";
+    if(i == 0){
+        whichDiv = "markerDiv0";
+    }
+    if(i == 1){
+        whichDiv = "markerDiv1"; 
+    }
+
+
     var l_pov = pan.getPov();
     if (l_pov)
     {
@@ -171,13 +209,13 @@ SVO.prototype.m_updateMarker = function ()
         var l_adjustedZoom = Math.pow(2, l_zoom) / 2;
 
 
-        // recalulate icon heading and pitch now
+        // recalulate icon heading and pitch now0
         this.sheading = google.maps.geometry.spherical.computeHeading(this.streetPt, this.pt)
         this.distance = google.maps.geometry.spherical.computeDistanceBetween(this.streetPt, this.pt);
 
         var l_pixelPoint = this.m_convertPointProjection(l_pov, l_adjustedZoom);
 
-        var l_markerDiv = eid("markerDiv");
+        var l_markerDiv = eid(whichDiv);
 
 
         var l_distanceScale = 50 / this.distance;
@@ -217,10 +255,13 @@ function markerClick()
 
 function loadPage()
 {
-    svo = new SVO();
+
+    svo = new SVO(51.507768, -0.127957);
     svo.m_initMap();
-    svo.m_initPanorama();
-    svo.m_initMarker();
+    svo.m_initPanorama(0);
+    svo.m_initPanorama(1); 
+    svo.m_initMarker(0);
+    svo.m_initMarker(1);  
 }
 
 
