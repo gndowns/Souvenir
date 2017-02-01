@@ -8,26 +8,9 @@
     <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
 
     <script type="text/javascript">
-    	// get data from post response 
-
-    	// FIX FUCKING DIV LOADING 
-    	// page needs to load first...? 
-    	// change when the file is sent 
-    	// the way i loaded the vars below ..?
-
-    	console.log('<%- JSON.stringify(palaceData) %>')
-    	var pData = JSON.parse('<%- JSON.stringify(palaceData) %>'); 
-    	console.log(JSON.stringify(pData)); 
-
-        // load divs 
-        
+    	var pData = JSON.parse('<%- JSON.stringify(palaceData) %>');  
     </script>
 
-
-
-
-    
-    
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDhLXFSbW3E-DSJc0H3tXiyHJ7Q8iYK-5o
     &sensor=false&libraries=geometry"></script>
 
@@ -43,13 +26,12 @@
                 var newDiv = document.createElement('div'); 
                 newDiv.id = "markerDiv" + i; 
                 newDiv.style = "position:relative;top:0px;left:0px;" + 
-                "z-index:1000;display:none;cursor:pointer"; 
-                newDiv.innerHTML = "TEST"; 
+                "z-index:1000;display:none;cursor:pointer";  
 
                 panFrame.appendChild(newDiv); 
             }
 
-            loadPage(); 
+            loadPage(pData.size); 
         });
         
     </script></head>

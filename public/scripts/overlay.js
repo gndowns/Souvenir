@@ -9,6 +9,9 @@ You are free to use and modify this code provided that you:
 */ 
 
 
+// TO-DO: 
+// image location
+// loading speed? 
 
 
 var svo = null;
@@ -31,8 +34,9 @@ function SVO(LAT, LNG)
     this.slng = -0.128652;
 
     // dynamically assign images 
+    this.image = new Object(); 
     for(var i = 0; i < pData.size; i++){
-        this["image" + i] = pData[i].img_url; 
+        this.image[i] = pData[i].img_url; 
     }
 
 
@@ -167,23 +171,12 @@ SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom)
 // create the 'marker' (a div containing an image which can be clicked)
 SVO.prototype.m_initMarker = function (i)
 {
-    var whichDiv = ""; 
-    var whichIMG = "";
-    if(i == 0){
-        whichDiv = "markerDiv0";
-        whichIMG = this["image" + 0];  
-    }
-    if(i == 1){
-        whichDiv = "markerDiv1";
-        whichIMG = this["image" + 1];  
-    }
-
-    var l_markerDiv = eid(whichDiv);
+    var l_markerDiv = eid("markerDiv" + i);
     l_markerDiv.style.width = this.markerWidth + "px";
     l_markerDiv.style.height = this.markerHeight + "px";
 
-    var l_iconDiv = eid(whichDiv);
-    l_iconDiv.innerHTML = "<img src='" + whichIMG + "' width='100%' height='100%' alt='' />";
+    var l_iconDiv = eid("markerDiv" + i);
+    l_iconDiv.innerHTML = "<img src='" + this.image[i] + "' width='100%' height='100%' alt='' />";
 
     this.m_updateMarker(i);
 }
@@ -191,15 +184,6 @@ SVO.prototype.m_initMarker = function (i)
 
 SVO.prototype.m_updateMarker = function (i)
 {
-    var whichDiv = "";
-    if(i == 0){
-        whichDiv = "markerDiv0";
-    }
-    if(i == 1){
-        whichDiv = "markerDiv1"; 
-    }
-
-
     var l_pov = pan.getPov();
     if (l_pov)
     {
@@ -215,7 +199,7 @@ SVO.prototype.m_updateMarker = function (i)
 
         var l_pixelPoint = this.m_convertPointProjection(l_pov, l_adjustedZoom);
 
-        var l_markerDiv = eid(whichDiv);
+        var l_markerDiv = eid("markerDiv" + i);
 
 
         var l_distanceScale = 50 / this.distance;
@@ -253,15 +237,18 @@ function markerClick()
 
 
 
-function loadPage()
+function loadPage(i)
 {
 
     svo = new SVO(51.507768, -0.127957);
     svo.m_initMap();
-    svo.m_initPanorama(0);
-    svo.m_initPanorama(1); 
-    svo.m_initMarker(0);
-    svo.m_initMarker(1);  
+
+    for(j = 0; j < i; j++){
+        svo.m_initPanorama(j); 
+    }
+    for(j = 0; j < i; j++){
+        svo.m_initMarker(j); 
+    }
 }
 
 
