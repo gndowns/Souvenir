@@ -1,6 +1,7 @@
 /* 
 streetview overlay script originally 
 written by team maps
+Adapted by Gabriel Downs, 2017 
 
 You are free to use and modify this code provided that you:
 (1) Include this notice within the javascript code
@@ -20,18 +21,13 @@ var svo = null;
 function SVO(LAT, LNG)
 {
     // Trafalgar Square
-    //     this.lat = 51.507768;
 
-    // this is where the image is 
-    this.lat = LAT;
-    this.lng = LNG;
+    // sel location 
+    this.slat = LAT; 
+    this.slng = LNG; 
+
     this.zoom = 16;
 
-
-    //    this.slat = 51.507527;
-    // this is where you are 
-    this.slat = 51.507527;
-    this.slng = -0.128652;
 
     // dynamically assign images 
     this.image = new Object(); 
@@ -39,8 +35,15 @@ function SVO(LAT, LNG)
         this.image[i] = pData[i].img_url; 
     }
 
+    // marker locations
+    var lat = 51.507768; 
+    var lng = -0.127957; 
+    var pt0 = new google.maps.LatLng(lat, lng); 
+    var pt1 = new google.maps.LatLng(lat - .000010, lng - 0.001000); 
+    //var pt1 = new google.maps.LatLng(51.507580, -0.128660); 
+    this.pt = [pt0, pt1]; 
 
-    this.pt = new google.maps.LatLng(this.lat, this.lng);
+    // where you are
     this.streetPt = new google.maps.LatLng(this.slat, this.slng);
 
     // initial POV
@@ -68,7 +71,7 @@ SVO.prototype.m_initMap = function ()
 
     var mapOptions =
     {
-        center: this.pt,
+        center: this.pt[0],
         zoom: this.zoom,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         scaleControl: true,
@@ -193,9 +196,12 @@ SVO.prototype.m_updateMarker = function (i)
         var l_adjustedZoom = Math.pow(2, l_zoom) / 2;
 
 
+        // this.pt is fixed, it is where the div is
+        // it never "moves" on the map
+
         // recalulate icon heading and pitch now0
-        this.sheading = google.maps.geometry.spherical.computeHeading(this.streetPt, this.pt)
-        this.distance = google.maps.geometry.spherical.computeDistanceBetween(this.streetPt, this.pt);
+        this.sheading = google.maps.geometry.spherical.computeHeading(this.streetPt, this.pt[i])
+        this.distance = google.maps.geometry.spherical.computeDistanceBetween(this.streetPt, this.pt[i]);
 
         var l_pixelPoint = this.m_convertPointProjection(l_pov, l_adjustedZoom);
 
@@ -215,6 +221,7 @@ SVO.prototype.m_updateMarker = function (i)
         var x = l_pixelPoint.x - Math.floor(wd / 2);
         var y = l_pixelPoint.y - Math.floor(ht / 2);
 
+        // update position 
         l_markerDiv.style.display = "block";
         l_markerDiv.style.left = x + "px";
         l_markerDiv.style.top = y + "px";
@@ -239,8 +246,8 @@ function markerClick()
 
 function loadPage(i)
 {
-
-    svo = new SVO(51.507768, -0.127957);
+    // initialize with self location 
+    svo = new SVO(51.507527, -0.128652);
     svo.m_initMap();
 
     for(j = 0; j < i; j++){
