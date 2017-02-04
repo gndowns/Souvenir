@@ -3,7 +3,13 @@
 <head>
 	<title>Souvenir: to remember</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="/scripts/parseList.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("form").submit(function(){
+				document.getElementById("list_input").innerHTML = "temporary loading page"; 
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id = "list_input"> 

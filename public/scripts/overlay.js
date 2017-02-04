@@ -38,10 +38,13 @@ function SVO(LAT, LNG)
     // marker locations
     var lat = 51.507768; 
     var lng = -0.127957; 
-    var pt0 = new google.maps.LatLng(lat, lng); 
-    var pt1 = new google.maps.LatLng(lat - .000010, lng - 0.001000); 
-    //var pt1 = new google.maps.LatLng(51.507580, -0.128660); 
-    this.pt = [pt0, pt1]; 
+    this.pt = new Array(pData.size);  
+    for (var i = 0; i < pData.size; i++){
+        this.pt[i] = new google.maps.LatLng(lat, lng); 
+        lat -= 0.000010; 
+        lng -= 0.001000;
+    }
+
 
     // where you are
     this.streetPt = new google.maps.LatLng(this.slat, this.slng);

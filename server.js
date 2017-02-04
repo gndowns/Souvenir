@@ -1,10 +1,14 @@
 var express = require("express"); 
+var session = require('express-session'); 
 var bodyParser = require("body-parser"); 
 var favicon = require('serve-favicon'); 
 var fs = require('fs'); 
 var request = require('request'); 
 
 var app = express(); 
+
+// TO DO: fix scaling of images
+
 
 // anything in public can be loaded now 
 app.use(express.static(__dirname + '/public')); 
@@ -23,6 +27,15 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());; 
 
 
+// sessions
+app.use(session({
+	secret: 'eqmLh1UA36', 
+	saveUninitialized: true, 
+	resave: true
+})); 
+
+
+
 // I guess we'll do the views 
 // plain html tho, we'll learn jade later
 app.set('views', __dirname + '/views'); 
@@ -32,18 +45,23 @@ app.set('view engine', 'ejs');
 
 
 
+// redirect to get below
+app.get('/list_submit', function(req, res){
+	res.render('palace.html', {palaceData: req.session.palaceData});
+}); 
 
 
-// handle the list submit 
+
+// redirected here 
 app.post('/list_submit', function(req, res){
+
 	// global var for use in flickr call
 	var listElem = ''; 
-
+	var listElems = '' + req.body.list;
 
 	// insert flickr here
 	console.log("Starting flickr getting images"); 
-	console.log("with list: \n" + req.body.list + "\n");
-	var listElems = '' + req.body.list; 
+	console.log("with list: \n" + listElems + "\n");
 	listElems = listElems.split('\r\n'); 
 
 	// add '+' for spaces
@@ -111,7 +129,8 @@ app.post('/list_submit', function(req, res){
 			console.log(palaceData); 
 
 			// send to palace here 
-			res.render('palace.html', {palaceData: palaceData});   
+			req.session.palaceData = palaceData;
+			res.redirect('list_submit');   
 		}
 
 	}
@@ -119,7 +138,6 @@ app.post('/list_submit', function(req, res){
 
 	// first call
 	getURL(0);  
-
 });
 
 
