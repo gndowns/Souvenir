@@ -10,6 +10,8 @@ var app = express();
 // TO DO: fix scaling of images
 
 
+app.set('port', (process.env.PORT || 5000)); 
+
 // anything in public can be loaded now 
 app.use(express.static(__dirname + '/public')); 
 
@@ -148,7 +150,7 @@ app.get('/', function(req, res){
 	res.render('index.html'); 
 });
 
-app.listen(3000, function(){
-	console.log("Started on PORT 3000"); 
+app.listen(app.get('port'), function(){
+	console.log("Started on PORT " + app.get('port')); 
 });
 
