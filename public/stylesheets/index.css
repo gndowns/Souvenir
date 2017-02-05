@@ -1,0 +1,72 @@
+body, h1, h2{
+	font-family: "Quando";
+}
+
+
+#listInput {
+	width: 600px;
+	height: 120px; 
+}
+
+#submit {
+	display: block;
+	margin-left: 500px;
+
+}
+
+.w3-row-padding img {
+	margin-bottom: 17px;
+}
+
+.w3-sidenav {
+	width: 170px; 
+	background: black; 
+}
+
+#main {
+	margin-left: 170px;
+}
+
+@media only screen and (max-width: 500px) {
+	#main {
+		margin-left: 0;
+	}
+}
+
+#icon {
+	width: 100px;
+}
+
+
+.w3-left {
+	width: 25% !important;
+}
+
+div.absolute > h3 {
+	position: absolute;
+	top: 130px;
+	right: 450px;
+	width: 250px; 
+	height: 20px; 
+	font-family: "GlacialIndifferenceRegular";
+	letter-spacing: 5px;
+	color: #CDCDCD;
+	font-size: 18px; 
+}
+
+div.relative {
+	position: relative;
+	width: 1030px; 
+	height: 200px; 
+	color: #47ABDF;
+	letter-spacing: 5px; 
+}
+
+
+#newAgeNg {
+	color: #47ABDF; 
+}
+
+#newAge {
+	color: #CDCDCD; 
+}
