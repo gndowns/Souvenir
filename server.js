@@ -47,14 +47,14 @@ app.set('view engine', 'ejs');
 
 
 
-// redirect to get below
+// redirected here from post
 app.get('/list_submit', function(req, res){
 	res.render('palace.html', {palaceData: req.session.palaceData});
 }); 
 
 
 
-// redirected here 
+// redirect to get above  
 app.post('/list_submit', function(req, res){
 
 	// global var for use in flickr call
@@ -128,7 +128,7 @@ app.post('/list_submit', function(req, res){
 		}
 		else{
 			console.log("all done!~\n");  
-			console.log(palaceData); 
+			//console.log(palaceData); 
 
 			// send to palace here 
 			req.session.palaceData = palaceData;

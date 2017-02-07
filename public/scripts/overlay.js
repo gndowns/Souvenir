@@ -38,11 +38,15 @@ function SVO(LAT, LNG)
     // marker locations
     var lat = 51.507768; 
     var lng = -0.127957; 
+
+    // 51.5075496,-0.1288616
+
     this.pt = new Array(pData.size);  
     for (var i = 0; i < pData.size; i++){
+
         this.pt[i] = new google.maps.LatLng(lat, lng); 
-        lat -= 0.000010; 
-        lng -= 0.001000;
+        lat -= 0.000385;
+        lng -= 0.0015188;
     }
 
 
@@ -55,7 +59,7 @@ function SVO(LAT, LNG)
     this.szoom = 1;
 
     this.distance = 0;  // distance in metres from street view to marker
-    this.maximumDistance = 200;     // distance beyond which marker is hidden
+    this.maximumDistance = 61;     // distance beyond which marker is hidden
 
     // dimensions of street view container (fixed)
     this.panWidth = 480;
@@ -250,7 +254,7 @@ function markerClick()
 function loadPage(i)
 {
     // initialize with self location 
-    svo = new SVO(51.507527, -0.128652);
+    svo = new SVO(51.5075137,-0.1282853);
     svo.m_initMap();
 
     for(j = 0; j < i; j++){
