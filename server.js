@@ -8,7 +8,6 @@ var request = require('request');
 var app = express(); 
 
 
-// TEST TEST TEST TESTING GIT TESTING 
 
 
 // TO DO: fix scaling of images
