@@ -47,14 +47,7 @@ app.set('view engine', 'ejs');
 
 
 
-// redirected here from post
-app.get('/list_submit', function(req, res){
-	res.render('palace.html', {palaceData: req.session.palaceData});
-}); 
-
-
-
-// redirect to get above  
+// redirect to get  
 app.post('/list_submit', function(req, res){
 
 	// global var for use in flickr call
@@ -130,9 +123,16 @@ app.post('/list_submit', function(req, res){
 			console.log("all done!~\n");  
 			//console.log(palaceData); 
 
-			// send to palace here 
-			req.session.palaceData = palaceData;
-			res.redirect('list_submit');   
+			// lock palaces to this session 
+			if (req.session.palaces == null){
+				req.session.palaces = [palaceData];  
+			}
+			else {
+				req.session.palaces.push(palaceData); 
+			}
+;
+			// manually add id, fix this later 
+			res.redirect('/palace' + '?id=' + (req.session.palaces.length - 1));   
 		}
 
 	}
@@ -142,12 +142,29 @@ app.post('/list_submit', function(req, res){
 	getURL(0);  
 });
 
+// post redirects here 
+app.get('/palace', function(req, res){
+
+	// get palace id
+	var id = req.query.id; 
+	palaces = req.session.palaces; 
+
+	// if directed to manually, without a post
+	if (palaces == null || id >= palaces.length){
+		res.redirect('/'); 
+	}
 
 
-// get '/' 
-// ie first thing they see when they go to the domain 
+	// if directed from  post, load palace
+	else {
+		res.render('palace.html', {palaceData: req.session.palaces[id]}); 
+	}
+});
+
+
 app.get('/', function(req, res){
 	res.render('index.html'); 
+
 });
 
 app.listen(app.get('port'), function(){
