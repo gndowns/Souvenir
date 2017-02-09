@@ -22,7 +22,7 @@ function SVO(LAT, LNG)
 {
     // Trafalgar Square
 
-    // sel location 
+    // self location 
     this.slat = LAT; 
     this.slng = LNG; 
 
@@ -72,7 +72,8 @@ function SVO(LAT, LNG)
 
 
 // create map
-SVO.prototype.m_initMap = function ()
+//try without map, just panorama 
+/*SVO.prototype.m_initMap = function ()
 {
     var mapDiv = eid("mapDiv");
 
@@ -86,7 +87,7 @@ SVO.prototype.m_initMap = function ()
     };
 
     map = new google.maps.Map(mapDiv, mapOptions);
-}
+}*/ 
 
 
 // create street view
@@ -113,7 +114,7 @@ SVO.prototype.m_initPanorama = function (i)
     // create new panorama only if first pass 
     if(i == 0){
         pan = new google.maps.StreetViewPanorama(l_panDiv, l_panOptions);
-        map.setStreetView(pan);
+        //map.setStreetView(pan);
     }
 
     // event handlers    
@@ -135,7 +136,7 @@ SVO.prototype.m_initPanorama = function (i)
 
         // your position 
         svo.streetPt = pan.getPosition();
-        map.setCenter(svo.streetPt);
+        //map.setCenter(svo.streetPt);
 
         svo.m_updateMarker(i);
     });
@@ -255,7 +256,7 @@ function loadPage(i)
 {
     // initialize with self location 
     svo = new SVO(51.5075137,-0.1282853);
-    svo.m_initMap();
+    //svo.m_initMap();
 
     for(j = 0; j < i; j++){
         svo.m_initPanorama(j); 
