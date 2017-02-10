@@ -7,7 +7,8 @@ var request = require('request');
 
 var app = express(); 
 
-
+// export local vs dev key with palace data 
+var MAPS_API_KEY = process.env.MAPS_API_KEY;  
 
 
 // TO DO: fix scaling of images
@@ -71,7 +72,10 @@ app.post('/list_submit', function(req, res){
 		}
 	}
 
-	palaceData = {size: listElems.length}; 
+	palaceData = {
+		key: MAPS_API_KEY,  
+		size: listElems.length
+	}; 
 
 	for(i = 0; i < palaceData.size; i++){
 		palaceData[i] = {
@@ -88,8 +92,8 @@ app.post('/list_submit', function(req, res){
 
 			var url = "https://api.flickr.com" + 
 			"/services/rest/?method=flickr.photos.search&" + 
-			"api_key=6ddcc51aac317ff8f54371029b81f85e&text=" 
-			+ listElem + 
+			"api_key=" + process.env.FLICKR_API_KEY + 
+			"&text=" + listElem + 
 			"&sort=relevance&content_type=1&" + 
 			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
 

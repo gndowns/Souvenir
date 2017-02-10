@@ -15,6 +15,7 @@ You are free to use and modify this code provided that you:
 // loading speed? 
 
 
+
 var svo = null;
 
 // the main application object
@@ -62,8 +63,8 @@ function SVO(LAT, LNG)
     this.maximumDistance = 61;     // distance beyond which marker is hidden
 
     // dimensions of street view container (fixed)
-    this.panWidth = 480;
-    this.panHeight = 480;
+    this.panWidth = 600;
+    this.panHeight = 600;
 
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 120;
