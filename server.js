@@ -9,7 +9,10 @@ var app = express();
 
 // export local vs dev key with palace data 
 var MAPS_API_KEY = process.env.MAPS_API_KEY;  
-
+var FLICKR_API_KEY = process.env.FLICKR_API_KEY; 
+// check configs
+//console.log(MAPS_API_KEY); 
+//console.log(FLICKR_API_KEY); 
 
 // TO DO: fix scaling of images
 
@@ -73,7 +76,8 @@ app.post('/list_submit', function(req, res){
 	}
 
 	palaceData = {
-		key: MAPS_API_KEY,  
+		mapKey: MAPS_API_KEY, 
+		flickrKey: FLICKR_API_KEY, 
 		size: listElems.length
 	}; 
 
@@ -84,19 +88,19 @@ app.post('/list_submit', function(req, res){
 		}
 	}
 
-	// forget a for loop 
-	// we'll do it recursively to deal with the asynchronous calls to flickr
+	// get first element and then send to client (get the rest after load)
 	function getURL(i){
 		if( i < listElems.length){
 			listElem = '' + listElems[i]; 
 
+			// change date 
+
 			var url = "https://api.flickr.com" + 
 			"/services/rest/?method=flickr.photos.search&" + 
-			"api_key=" + process.env.FLICKR_API_KEY + 
+			"api_key=" + FLICKR_API_KEY + 
 			"&text=" + listElem + 
 			"&sort=relevance&content_type=1&" + 
 			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
-
 
 			// use request to do this whoops 
 			console.log("making request for: " + listElem); 
@@ -120,26 +124,25 @@ app.post('/list_submit', function(req, res){
 
 					console.log(img_url); 
 
-					// recurse
-					console.log("\nrecursing\n"); 
-					getURL(i + 1); 
+					// send to client with first image
+					if (req.session.palaces == null){
+						req.session.palaces = [palaceData]; 
+					} 
+					else {
+						req.session.palaces.push(palaceData); 
+					}
+
+					res.redirect('/palace' + '?id=' + (req.session.palaces.length - 1)); 
+				}
+				else{
+					// handle error 
+					console.log("ERROR"); 
+					res.redirect('/'); 
 				}
 			});
 		}
 		else{
-			console.log("all done!~\n");  
-			//console.log(palaceData); 
-
-			// lock palaces to this session 
-			if (req.session.palaces == null){
-				req.session.palaces = [palaceData];  
-			}
-			else {
-				req.session.palaces.push(palaceData); 
-			}
-;
-			// manually add id, fix this later 
-			res.redirect('/palace' + '?id=' + (req.session.palaces.length - 1));   
+			res.redirect('/');  
 		}
 
 	}

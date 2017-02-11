@@ -16,40 +16,14 @@
 
 
     
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var panFrame = document.getElementById("panFrame"); 
-
-            for (var i = 0; i < pData.size; i++){
-                console.log('adding div ' + i); 
-                var newDiv = document.createElement('div'); 
-                newDiv.id = "markerDiv" + i; 
-                newDiv.style = "position:relative;top:0px;left:0px;" + 
-                "z-index:1000;display:none;cursor:pointer";  
-
-                panFrame.appendChild(newDiv); 
-            }
-
-            $.getScript("http://maps.google.com/maps/api/js?key="+
-                pData.key + 
-                "&sensor=false&libraries=geometry",
-                function(){
-                    loadPage(pData.size); 
-            }); 
-        });
-        
+    <script type="text/javascript" src="/scripts/readyPage.js">
     </script>
 
     <link rel="stylesheet" type="text/css" href="/stylesheets/palace.css">
 
 
     </head>
-<body class="w3-black">
-
-
-    <!-- FIX THIS AHH --> 
-
-
+<body class="w3-black"> 
     <div id="panFrame"> 
 
             <div id="panDiv"></div> 
@@ -57,7 +31,5 @@
             <!-- MARKER DIVS GO HERE --> 
 
     </div>
-
-
 </body>
 </html>

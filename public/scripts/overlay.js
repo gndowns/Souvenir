@@ -10,11 +10,6 @@ You are free to use and modify this code provided that you:
 */ 
 
 
-// TO-DO: 
-// image location
-// loading speed? 
-
-
 
 var svo = null;
 
@@ -44,7 +39,6 @@ function SVO(LAT, LNG)
 
     this.pt = new Array(pData.size);  
     for (var i = 0; i < pData.size; i++){
-
         this.pt[i] = new google.maps.LatLng(lat, lng); 
         lat -= 0.000385;
         lng -= 0.0015188;
@@ -69,26 +63,7 @@ function SVO(LAT, LNG)
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 120;
     this.markerHeight = 80;
-}
-
-
-// create map
-//try without map, just panorama 
-/*SVO.prototype.m_initMap = function ()
-{
-    var mapDiv = eid("mapDiv");
-
-    var mapOptions =
-    {
-        center: this.pt[0],
-        zoom: this.zoom,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        scaleControl: true,
-        mapTypeControl: false
-    };
-
-    map = new google.maps.Map(mapDiv, mapOptions);
-}*/ 
+} 
 
 
 // create street view
@@ -137,7 +112,6 @@ SVO.prototype.m_initPanorama = function (i)
 
         // your position 
         svo.streetPt = pan.getPosition();
-        //map.setCenter(svo.streetPt);
 
         svo.m_updateMarker(i);
     });
@@ -182,8 +156,9 @@ SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom)
 
 // create the 'marker' (a div containing an image which can be clicked)
 SVO.prototype.m_initMarker = function (i)
-{
+{ 
     var l_markerDiv = eid("markerDiv" + i);
+    
     l_markerDiv.style.width = this.markerWidth + "px";
     l_markerDiv.style.height = this.markerHeight + "px";
 
@@ -245,27 +220,6 @@ SVO.prototype.m_updateMarker = function (i)
     }
 }
 
-// display a message when the user clicks on the marker's div
-function markerClick()
-{
-    eid("markerClick").innerHTML = "<h2>!!!</h2>";
-}
-
-
-
-function loadPage(i)
-{
-    // initialize with self location 
-    svo = new SVO(51.5075137,-0.1282853);
-    //svo.m_initMap();
-
-    for(j = 0; j < i; j++){
-        svo.m_initPanorama(j); 
-    }
-    for(j = 0; j < i; j++){
-        svo.m_initMarker(j); 
-    }
-}
 
 
 // utils
