@@ -9,6 +9,8 @@ You are free to use and modify this code provided that you:
 
 */ 
 
+// current item we're looking for 
+var currentElem = 0; 
 
 
 var svo = null;
@@ -57,8 +59,8 @@ function SVO(LAT, LNG)
     this.maximumDistance = 61;     // distance beyond which marker is hidden
 
     // dimensions of street view container (fixed)
-    this.panWidth = 600;
-    this.panHeight = 600;
+    this.panWidth = 500;
+    this.panHeight = 500;
 
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 120;
@@ -96,19 +98,19 @@ SVO.prototype.m_initPanorama = function (i)
     // event handlers    
     google.maps.event.addListener(pan, 'pov_changed', function ()
     {
-        console.log('updating pov ' + i); 
+       // console.log('updating pov ' + i); 
         svo.m_updateMarker(i);
     });
 
     google.maps.event.addListener(pan, 'zoom_changed', function ()
     {
-        console.log('updating zoom ' + i); 
+        //console.log('updating zoom ' + i); 
         svo.m_updateMarker(i);
     });
 
     google.maps.event.addListener(pan, 'position_changed', function ()
     {
-        console.log('updating position ' + i ); 
+       // console.log('updating position ' + i ); 
 
         // your position 
         svo.streetPt = pan.getPosition();
@@ -119,6 +121,27 @@ SVO.prototype.m_initPanorama = function (i)
 }
 
 
+
+SVO.prototype.updateDirections = function(angle){
+    var directions = eid("directions"); 
+
+    var mssg = "";
+    var range = 25;  
+
+    if (angle <= range && angle >= -range){
+        mssg = "Go Straight!!"; 
+    }
+    // to the left of image
+    else if (angle > range) {
+        mssg = "Turn Right!";
+    }
+    // to the right of the image
+    else if (angle < range) {
+        mssg = "Turn Left!"; 
+    }
+
+    directions.innerHTML = mssg; 
+}
 
 
 function Marker(p_name, p_icon, p)
@@ -132,7 +155,7 @@ function Marker(p_name, p_icon, p)
 }
 
 // convert the current heading and pitch (degrees) into pixel coordinates
-SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom)
+SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom, i)
 {
     var l_fovAngleHorizontal = 90 / p_zoom;
     var l_fovAngleVertical = 90 / p_zoom;
@@ -141,8 +164,19 @@ SVO.prototype.m_convertPointProjection = function (p_pov, p_zoom)
     var l_midY = this.panHeight / 2;
 
     var l_diffHeading = this.sheading - p_pov.heading;
-    l_diffHeading = normalizeAngle(l_diffHeading);
+
+
+    l_diffHeading = normalizeAngle(l_diffHeading); 
+
+    // update directions
+    if (i == currentElem) svo.updateDirections(l_diffHeading); 
+
+    //console.log("heading: " + l_diffHeading); 
+
+
     l_diffHeading /= l_fovAngleHorizontal;
+
+
 
     var l_diffPitch = (p_pov.pitch - this.spitch) / l_fovAngleVertical;
 
@@ -187,7 +221,10 @@ SVO.prototype.m_updateMarker = function (i)
         this.sheading = google.maps.geometry.spherical.computeHeading(this.streetPt, this.pt[i])
         this.distance = google.maps.geometry.spherical.computeDistanceBetween(this.streetPt, this.pt[i]);
 
-        var l_pixelPoint = this.m_convertPointProjection(l_pov, l_adjustedZoom);
+
+
+
+        var l_pixelPoint = this.m_convertPointProjection(l_pov, l_adjustedZoom, i);
 
         var l_markerDiv = eid("markerDiv" + i);
 
@@ -214,10 +251,35 @@ SVO.prototype.m_updateMarker = function (i)
 
 
         // hide marker when its beyond the maximum distance
-        l_markerDiv.style.display = this.distance < this.maximumDistance ? "block" : "none";
+        if (this.distance < this.maximumDistance){
+            l_markerDiv.style.display = "block"; 
+            if (i == currentElem){
+                eid("directions").innerHTML = "Click the picture to move on to the next item!";
+            }
+        }
+        else {
+            l_markerDiv.style.display = "none"; 
+        }
+
         // glog("distance = " + Math.floor(this.distance) + " m (" + l_markerDiv.style.display + ") distance scale = " + l_distanceScale + " l_adjustedZoom = " + l_adjustedZoom);
 
     }
+}
+
+// TO DO: WHEN LIST MAXES OUT 
+
+// udpate currentElem when they find (click) the last one
+
+// MAKE IT OWRK 
+function markerClick(){
+    console.log('updating'); 
+    console.log
+    if (++currentElem >= pData.size) currentElem = 0; 
+
+    console.log(currentElem);
+
+    eid("directions").innerHTML = "Good! " +
+    "Look around to find the next item...";
 }
 
 

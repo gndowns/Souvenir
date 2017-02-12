@@ -5,6 +5,7 @@ function createDivs(n){
 	for (var i = 0; i < n; i++){
 		var newDiv = document.createElement('div'); 
 		newDiv.id = "markerDiv" + i; 
+		newDiv.className = "markerDiv"; 
 		newDiv.style = "" +
 			"position: relative;" + 
 			"top: 0px; left: 0px;" +
@@ -21,7 +22,6 @@ function loadMarkers(n){
 	svo.m_initPanorama(0); 
 	svo.m_initMarker(0); 
 
-	console.log(n); 
 
 	for(var i = 1; i < n; i++){
 		(function(index) {
@@ -63,5 +63,8 @@ $(document).ready(function(){
     		loadMarkers(pData.size); 
     }); 
 
+    $("#panFrame").on("click", ".markerDiv", function(){
+    	markerClick(); 
+    })
 
 }); 
