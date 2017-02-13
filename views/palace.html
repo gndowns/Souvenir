@@ -14,9 +14,15 @@
 
     <script type="text/javascript" src="/scripts/overlay.js"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            loadPage(); 
+        })
 
-    
-    <script type="text/javascript" src="/scripts/readyPage.js">
+        // attach click event to each marker div
+        $("#panFrame").on("click", ".markerDiv", function(){
+            markerClick(); 
+        }); 
     </script>
 
     <link rel="stylesheet" type="text/css" href="/stylesheets/palace.css">

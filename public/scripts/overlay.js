@@ -13,6 +13,11 @@ You are free to use and modify this code provided that you:
 var currentElem = 0; 
 
 
+
+
+
+
+
 var svo = null;
 
 // the main application object
@@ -34,16 +39,16 @@ function SVO(LAT, LNG)
     }
 
     // marker locations
-    var lat = 51.507768; 
-    var lng = -0.127957; 
+    var markerLat = LAT + 0.0002543; 
+    var markerLng = LNG + 0.0003283; 
 
     // 51.5075496,-0.1288616
 
     this.pt = new Array(pData.size);  
     for (var i = 0; i < pData.size; i++){
-        this.pt[i] = new google.maps.LatLng(lat, lng); 
-        lat -= 0.000385;
-        lng -= 0.0015188;
+        this.pt[i] = new google.maps.LatLng(markerLat, markerLng); 
+        markerLat -= 0.000385;
+        markerLng -= 0.0015188;
     }
 
 
@@ -269,8 +274,6 @@ SVO.prototype.m_updateMarker = function (i)
 // TO DO: WHEN LIST MAXES OUT 
 
 // udpate currentElem when they find (click) the last one
-
-// MAKE IT OWRK 
 function markerClick(){
     console.log('updating'); 
     console.log
@@ -281,6 +284,84 @@ function markerClick(){
     eid("directions").innerHTML = "Good! " +
     "Look around to find the next item...";
 }
+
+function createDivs(listSize){
+    var panFrame = eid("panFrame"); 
+
+    for(var i = 0; i < listSize; i++){
+        var newDiv = document.createElement("div"); 
+        newDiv.id = "markerDiv" + i; 
+        newDiv.className = "markerDiv"; 
+        newDiv.style = "" + 
+            "position: relative;" + 
+            "top: 0px; left: 0px;" + 
+            "z-index: 1000; display: none;" +
+            "cursor: pointer;" ; 
+        panFrame.appendChild(newDiv); 
+    }
+}
+
+function loadSVO(listSize){
+    // Trafalgar Square coords, changeable in future
+    var lat = 51.5075137; 
+    var lng = -0.1282853; 
+
+    svo = new SVO(lat, lng); 
+
+    // init first image
+    // TO-DO: LOAD FIRST IMAGE CLIENT SIDE TOO
+    svo.m_initPanorama(0); 
+    svo.m_initMarker(0); 
+
+    for(var i = 1; i < listSize; i++){
+        // look index to each image
+        (function(index){
+            var url = "https://api.flickr.com" + 
+            "/services/rest/?method=flickr.photos.search&" + 
+            "api_key=" + pData.flickrKey + 
+            "&text=" + pData[index].listElem + 
+            "&sort=relevance&content_type=1&" + 
+            "max_upload_date=1478011191&format=json&nojsoncallback=1"; 
+
+            $.get(url, function(data){
+                var photo = data.photos.photo[0]; 
+                var img_url = "http://farm" + photo.farm +
+                ".static.flickr.com/" + photo.server + 
+                "/" + photo.id + "_" + photo.secret + 
+                "_m.jpg"; 
+
+                svo.image[index] = img_url; 
+
+                svo.m_initPanorama(index); 
+                svo.m_initMarker(index); 
+
+            }) ;
+        })(i); 
+    }
+}
+
+
+
+function loadPage(){
+    // create divs for image overlays
+    createDivs(pData.size);
+
+    // import google maps 
+    // attach images asyncrhonously after 
+    $.getScript("http://maps.google.com/maps/api/js?key="+
+        pData.mapKey + 
+        "&sensor=false&libraries=geometry",
+        function(){ 
+            loadSVO(pData.size); 
+    }); 
+
+
+     // attach click event to each marker div
+    $("#panFrame").on("click", ".markerDiv", function(){
+        markerClick();         
+    }); 
+}
+
 
 
 

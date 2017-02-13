@@ -15,10 +15,21 @@ function createDivs(n){
 	}
 }
 
+function randomCoords(min, max){
+	return (Math.random() * (max - min) + min).toFixed(7); 
+}
+
+
 function loadMarkers(n){
 	// we already loaded first image, 
 	// start at 1
-	svo = new SVO(51.5075137, -0.1282853); 
+	// Trafalgar Square
+	svo = new SVO(51.5075137, -0.1282853);
+
+	//var latRandom = randomCoords(51.4, 52.6); 
+	//var lngRandom = randomCoords(-2.6, -0.2); 
+	//svo = new SVO(latRandom, lngRandom);  
+
 	svo.m_initPanorama(0); 
 	svo.m_initMarker(0); 
 
