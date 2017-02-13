@@ -22,8 +22,10 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
+			$(document).body.appendChild("form"); 
+
 			$("form").submit(function(){
-				document.getElementById("listWrapper").innerHTML = "temporary loading page"; 
+				document.getElementById("listWrapper").innerHTML = '<img src=/images/icon.png />'; 
 			});
 		});
 	</script>
