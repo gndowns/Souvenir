@@ -4,6 +4,7 @@ body, h1, h2{
 
 
 #listInput {
+	margin-left: 400px;
 	width: 600px;
 	height: 120px; 
 }
