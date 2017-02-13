@@ -126,15 +126,15 @@ SVO.prototype.m_initPanorama = function (i)
 }
 
 
-
 SVO.prototype.updateDirections = function(angle){
+
     var directions = eid("directions"); 
 
     var mssg = "";
     var range = 25;  
 
     if (angle <= range && angle >= -range){
-        mssg = "Go Straight!!"; 
+        mssg = "Go Forward!!"; 
     }
     // to the left of image
     else if (angle > range) {
@@ -258,7 +258,11 @@ SVO.prototype.m_updateMarker = function (i)
         // hide marker when its beyond the maximum distance
         if (this.distance < this.maximumDistance){
             l_markerDiv.style.display = "block"; 
-            if (i == currentElem){
+            if (i == 0){
+                eid("directions").innerHTML = welcomeMessage; 
+            }
+
+            else if (i == currentElem){
                 eid("directions").innerHTML = "Click the picture to move on to the next item!";
             }
         }
@@ -270,6 +274,11 @@ SVO.prototype.m_updateMarker = function (i)
 
     }
 }
+
+var welcomeMessage = "Welcome to your Memory Palace! " +
+    "All of the items you entered are stored somewhere here in the Palace. " +
+    "Folow the directions printed here to navigate between items. " +
+    "Click on your first item to begin!"; 
 
 // TO DO: WHEN LIST MAXES OUT 
 
@@ -338,6 +347,7 @@ function loadSVO(listSize){
             }) ;
         })(i); 
     }
+
 }
 
 

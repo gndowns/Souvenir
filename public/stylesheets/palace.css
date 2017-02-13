@@ -1,8 +1,9 @@
 #panFrame{
 	position: relative;
 	height: 500px;
-	width: 500px; 
+	min-width: 500px; 
 	overflow: hidden;
+	float: left;
 }
 
 /* the size has to be the same for the overflow */ 
@@ -13,4 +14,10 @@
 	left: 0px;
 	width: 500px; 
 	height: 500px;
+}
+
+
+h2 {
+	display: inline-block;
+	margin: 5px;
 }

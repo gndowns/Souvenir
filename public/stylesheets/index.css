@@ -2,9 +2,14 @@ body, h1, h2{
 	font-family: "Quando";
 }
 
+p {
+	margin-bottom: 0px; 
+}
+
+
 
 #listInput {
-	margin-left: 400px;
+	margin-left: 440px;
 	width: 600px;
 	height: 120px; 
 }
@@ -59,10 +64,14 @@ center > h3 {
 	font-size: 18px;
 }
 
+center > p {
+	color: #CDCDCD; 
+}
+
 div.relative {
 	position: relative;
 	width: 1030px; 
-	height: 200px; 
+	height: 150px; 
 	color: #47ABDF;
 	letter-spacing: 5px; 
 }
