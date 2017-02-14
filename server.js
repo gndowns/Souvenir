@@ -57,9 +57,12 @@ app.set('view engine', 'ejs');
 // redirect to get  
 app.post('/list_submit', function(req, res){
 
+	// TESTING	
+	console.log(req.body); 
+
 	// global var for use in flickr call
-	var listElem = ''; 
-	var listElems = '' + req.body.list;
+	var listElem = ""; 
+	var listElems = "" + req.body.list;
 
 	// insert flickr here
 	console.log("Starting flickr getting images"); 
@@ -98,7 +101,7 @@ app.post('/list_submit', function(req, res){
 			var url = "https://api.flickr.com" + 
 			"/services/rest/?method=flickr.photos.search&" + 
 			"api_key=" + FLICKR_API_KEY + 
-			"&text=" + listElem + 
+			"&text=" + encodeURI(encodeURIComponent(listElem)) + 
 			"&sort=relevance&content_type=1&" + 
 			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
 
@@ -151,6 +154,8 @@ app.post('/list_submit', function(req, res){
 	// first call
 	getURL(0);  
 });
+
+
 
 // post redirects here 
 app.get('/palace', function(req, res){
