@@ -21,3 +21,8 @@ h2 {
 	display: inline-block;
 	margin: 5px;
 }
+
+#linkWrap {
+	position: relative;
+	clear: both;
+}

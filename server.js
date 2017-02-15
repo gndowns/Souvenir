@@ -10,6 +10,7 @@ var app = express();
 // export local vs dev key with palace data 
 var MAPS_API_KEY = process.env.MAPS_API_KEY;  
 var FLICKR_API_KEY = process.env.FLICKR_API_KEY; 
+
 // check configs
 //console.log(MAPS_API_KEY); 
 //console.log(FLICKR_API_KEY); 
@@ -19,10 +20,8 @@ var FLICKR_API_KEY = process.env.FLICKR_API_KEY;
 
 app.set('port', (process.env.PORT || 5000)); 
 
-// anything in public can be loaded now 
 app.use(express.static(__dirname + '/public')); 
 
-// makes favicon
 app.use(favicon(__dirname + '/public/images/icon.png')); 
 
 
@@ -44,9 +43,6 @@ app.use(session({
 })); 
 
 
-
-// I guess we'll do the views 
-// plain html tho, we'll learn jade later
 app.set('views', __dirname + '/views'); 
 app.engine('html', require('ejs').renderFile); 
 app.set('view engine', 'ejs'); 
@@ -54,11 +50,11 @@ app.set('view engine', 'ejs');
 
 
 
-// redirect to get  
+// redirects to get  
 app.post('/list_submit', function(req, res){
 
 	// TESTING	
-	console.log(req.body); 
+	//console.log(req.body); 
 
 	// global var for use in flickr call
 	var listElem = ""; 
@@ -69,7 +65,7 @@ app.post('/list_submit', function(req, res){
 	console.log("with list: \n" + listElems + "\n");
 	listElems = listElems.split('\r\n'); 
 
-	// add '+' for spaces
+	// add '+' for spaces for url format 
 	for (var i = 0; i < listElems.length; i++){ 
 		for(var j = 0; j < listElems[i].length; j++){
 			if (listElems[i][j] == ' '){
@@ -149,8 +145,6 @@ app.post('/list_submit', function(req, res){
 		}
 
 	}
-
-
 	// first call
 	getURL(0);  
 });
