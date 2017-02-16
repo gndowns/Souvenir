@@ -9,14 +9,8 @@ You are free to use and modify this code provided that you:
 
 */ 
 
-// current item we're looking for 
+// current element the user is looking for 
 var currentElem = 0; 
-
-
-
-
-
-
 
 var svo = null;
 

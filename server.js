@@ -67,11 +67,10 @@ app.post('/list_submit', function(req, res){
 
 	// add '+' for spaces for url format 
 	for (var i = 0; i < listElems.length; i++){ 
-		for(var j = 0; j < listElems[i].length; j++){
-			if (listElems[i][j] == ' '){
-				listElems[i][j] = '+'; 
-			}
-		}
+		console.log(listElems[i]);  
+		listElems[i] = listElems[i].replace(/[^\w\s]/g, ''); 
+		listElems[i] = listElems[i].replace(/[\s]/g, "+"); 
+		console.log(listElems[i]); 
 	}
 
 	palaceData = {
@@ -101,6 +100,10 @@ app.post('/list_submit', function(req, res){
 			"&sort=relevance&content_type=1&" + 
 			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
 
+			// TESTING
+			console.log(url); 
+
+
 			// use request to do this whoops 
 			console.log("making request for: " + listElem); 
 			request({
@@ -110,28 +113,34 @@ app.post('/list_submit', function(req, res){
 				if (!error && response.statusCode == 200){ 
 					console.log("success!"); 
 					var photo = body.photos.photo[0]; 
-					var img_url = "http://farm" + photo.farm + 
-					".static.flickr.com/" + photo.server + 
-					"/" + photo.id + "_" + photo.secret + 
-					"_m.jpg"; 
+					if (photo != null){ 
+						var img_url = "http://farm" + photo.farm + 
+						".static.flickr.com/" + photo.server + 
+						"/" + photo.id + "_" + photo.secret + 
+						"_m.jpg"; 
 
-					palaceData[i].img_url = img_url; 
+						palaceData[i].img_url = img_url; 
 					
 
-					// TO DO: can't concatenate listELem as string
-					// freaks out when logged with other string literals
+						// TO DO: can't concatenate listELem as string
+						// freaks out when logged with other string literals
 
-					console.log(img_url); 
+						console.log(img_url); 
 
-					// send to client with first image
-					if (req.session.palaces == null){
-						req.session.palaces = [palaceData]; 
-					} 
-					else {
-						req.session.palaces.push(palaceData); 
+						// send to client with first image
+						if (req.session.palaces == null){
+							req.session.palaces = [palaceData]; 
+						} 
+						else {
+							req.session.palaces.push(palaceData); 
+						}
+
+						res.redirect('/palace' + '?id=' + (req.session.palaces.length - 1)); 
 					}
+					else {
+						res.redirect('/'); 
+					}	
 
-					res.redirect('/palace' + '?id=' + (req.session.palaces.length - 1)); 
 				}
 				else{
 					// handle error 
@@ -175,6 +184,11 @@ app.get('/', function(req, res){
 	res.render('index.html'); 
 
 });
+
+// stale posts
+app.get('/list_submit', function(req, res){
+	res.render('index.html'); 
+})
 
 app.listen(app.get('port'), function(){
 	console.log("Started on PORT " + app.get('port')); 
