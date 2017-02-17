@@ -5,23 +5,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<title>Souvenir: to remember</title>
+
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-
-	<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/glacial-indifference" type="text/css"/>
-
-	<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
-
-
-
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var form = document.getElementsByTagName("form")[0]; 
-			document.body.appendChild(form); 
-
 			$("form").submit(function(){
 				document.getElementById("listWrapper").innerHTML = '<img src=/images/icon.png />'; 
 			});
@@ -29,34 +19,15 @@
 	</script>
 </head>
 <body>
-
-	<header id="home">
-		<div id="main"> 
-			<div class="relative">
-				<h1><span>SOUVENIR</span>
-				</h1>
-				<center>
-				<h3>THE APPLICATION</h3>
-				</center>
-			</div>
-			<center>
-				<p>Welcome to Souvenir! <br>
-				Begin by entering in any list of items, separated by new lines. 
-				<br>Press 'Submit' to take the items to your Memory Palace.</p>
-			</center>
-
-			<div> 
-				<form action = '/list_submit' method = 'POST'>
-					<textarea id="listInput" name = "list"></textarea>
-					<center>
-					<input id="submit" type="submit" value="Submit">
-					</center>
-				</form> 
-			</div>
-		</div>
-
-
-		
-	</header>
+	<div id="main">
+		<h1><span>SOUVENIR</span></h1>
+		<p id="welcomeMssg">Welcome to Souvenir! <br>
+		Begin by entering in any list of items, separated by new lines. 
+		<br>Press 'Submit' to take the items to your Memory Palace.</p>
+		<form action = '/list_submit' method = 'POST'>
+			<textarea id="listInput" name="list"></textarea>
+			<input id="submit" type="submit" value="Submit">
+		</form> 
+	</div>
 </body>
 </html>
