@@ -5,95 +5,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<title>Souvenir: to remember</title>
+
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-	<link rel="stylesheet" href="/stylesheets/w3.css">
-	<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">-->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-	<!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Quando">-->
-
-	<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/glacial-indifference" type="text/css"/>
-
-	<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
-
-
-
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var form = document.getElementsByTagName("form")[0]; 
-			document.body.appendChild(form); 
-
 			$("form").submit(function(){
 				document.getElementById("listWrapper").innerHTML = '<img src=/images/icon.png />'; 
 			});
 		});
 	</script>
 </head>
-<body class="w3-black">
-
-	<!-- navbar on medium and large screens --> 
-	<nav class="w3-sidenav w3-center w3-small w3-hide-small"> 
-		<img id="icon" src="/images/icon.png" > 
-
-		<a class="w3-padding-large w3-hover-black" href="/"> 
-			<i class="fa fa-home w3-xxlarge w3-hover-black" id="newAgeNg"></i>
-			<p id="newAge">HOME</p>
-		</a>
-		<!--
-		<a class="w3-padding-large w3-hover-black" href="/contact.html"> 
-			<i class="fa fa-user w3-xxlarge w3-hover-black" id="newAgeNg"></i>
-			<p id="newAge>">ABOUT</p>
-		</a>
-		<a class="w3-padding-large w3-hover-black" href="contact.html">
-    		<i class="fa fa-eye w3-xxlarge w3-hover-black" id = newAgeNg></i>
-    		<p id = newAge>PHOTOS</p>
- 		</a>
-  		<a class="w3-padding-large w3-hover-black" href="contact.html">
-    		<i class="fa fa-envelope w3-xxlarge w3-hover-black" id = newAgeNg></i>
-    		<p id = newAge>CONTACT</p>
-  		</a>-->
-	</nav>
-
-	<!-- Navbar on small screens (Hidden on medium and large screens) -->
-	<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
-  		<ul class="w3-navbar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
-    		<li class="w3-left"	><a href="/">HOME</a></li>
-    		
-    		<!--<li class="w3-left"><a href="contact.html">ABOUT</a></li>
-    		<li class="w3-left"><a href="contact.html">PHOTOS</a></li>
-    		<li class="w3-left"><a href="contact.html">CONTACT</a></li>--> 
-  		</ul>
+<body>
+	<div id="main">
+		<h1><span>SOUVENIR</span></h1>
+		<p id="welcomeMssg">Welcome to Souvenir! <br>
+		Begin by entering in any list of items, separated by new lines. 
+		<br>Press 'Submit' to take the items to your Memory Palace.</p>
+		<form action = '/list_submit' method = 'POST'>
+			<textarea id="listInput" name="list"></textarea>
+			<input id="submit" type="submit" value="Submit">
+		</form> 
 	</div>
-
-	<header class="w3-container w3-padding-32 w3-center w3-black" id="home">
-		<div class="w3-padding-large" id="main"> 
-			<div class="relative">
-				<h1 class="w3-jumbo"><span class="w3-hide-small">SOUVENIR</span>
-				</h1>
-				<center>
-				<h3>THE APPLICATION</h3>
-				</center>
-			</div>
-			<center>
-				<p>Welcome to Souvenir! <br>
-				Begin by entering in any list of items, separated by new lines. 
-				<br>Press 'Submit' to take the items to your Memory Palace.</p>
-			</center>
-
-			<div id="listWrapper"> 
-				<form action = '/list_submit' method = 'POST'>
-					<textarea id="listInput" name = "list"></textarea>
-					<center>
-					<input id="submit" type="submit" value="Submit">
-					</center>
-				</form> 
-			</div>
-		</div>
-
-
-		
-	</header>
 </body>
 </html>

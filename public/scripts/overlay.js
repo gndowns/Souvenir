@@ -58,8 +58,10 @@ function SVO(LAT, LNG)
     this.maximumDistance = 61;     // distance beyond which marker is hidden
 
     // dimensions of street view container (fixed)
-    this.panWidth = 500;
-    this.panHeight = 500;
+    this.panWidth = $("#panFrame").width();
+    this.panHeight = $("#panFrame").height(); 
+    console.log(this.panWidth); 
+    console.log(this.panHeight); 
 
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 120;
