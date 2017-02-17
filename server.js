@@ -60,17 +60,13 @@ app.post('/list_submit', function(req, res){
 	var listElem = ""; 
 	var listElems = "" + req.body.list;
 
-	// insert flickr here
-	console.log("Starting flickr getting images"); 
-	console.log("with list: \n" + listElems + "\n");
+	console.log("submitted with list: \n" + listElems + "\n");
 	listElems = listElems.split('\r\n'); 
 
 	// add '+' for spaces for url format 
 	for (var i = 0; i < listElems.length; i++){ 
-		console.log(listElems[i]);  
 		listElems[i] = listElems[i].replace(/[^\w\s]/g, ''); 
 		listElems[i] = listElems[i].replace(/[\s]/g, "+"); 
-		console.log(listElems[i]); 
 	}
 
 	palaceData = {
@@ -100,18 +96,12 @@ app.post('/list_submit', function(req, res){
 			"&sort=relevance&content_type=1&" + 
 			"max_upload_date=1478011191&format=json&nojsoncallback=1"; 
 
-			// TESTING
-			console.log(url); 
-
-
-			// use request to do this whoops 
-			console.log("making request for: " + listElem); 
+ 
 			request({
 				url: url, 
 				json: true
 			}, function(error, response, body){
-				if (!error && response.statusCode == 200){ 
-					console.log("success!"); 
+				if (!error && response.statusCode == 200){  
 					var photo = body.photos.photo[0]; 
 					if (photo != null){ 
 						var img_url = "http://farm" + photo.farm + 
@@ -120,12 +110,6 @@ app.post('/list_submit', function(req, res){
 						"_m.jpg"; 
 
 						palaceData[i].img_url = img_url; 
-					
-
-						// TO DO: can't concatenate listELem as string
-						// freaks out when logged with other string literals
-
-						console.log(img_url); 
 
 						// send to client with first image
 						if (req.session.palaces == null){

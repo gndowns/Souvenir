@@ -18,3 +18,39 @@ textarea {
 	width: 300px; 
 	height: 66px; 
 }
+
+
+/* palace styling */ 
+
+/* wrapper for map and markerDivs */ 
+#panFrame {
+	position: relative; 
+	width: 500px;  
+	height: 500px; 
+
+	/*height: 500px; 
+	width: 500px; 
+	/*max-width: 100%; 
+	max-height: 66%;*/ 
+	overflow: hidden; 
+}
+
+/* the panorama itself */ 
+#panDiv {
+	position: absolute; 
+	top: 0px; 
+	left: 0px; 
+	width: 500px; 
+	height: 500px; 
+
+	/*width: 500px; 
+	height: 500px; 
+	/*max-width: 100%;
+	max-height: 66%; */ 
+}
+
+/* link to team maps */ 
+#linkWrap {
+	position: relative; 
+	clear: both; 
+}
