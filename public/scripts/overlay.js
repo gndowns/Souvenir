@@ -59,9 +59,7 @@ function SVO(LAT, LNG)
 
     // dimensions of street view container (fixed)
     this.panWidth = $("#panFrame").width();
-    this.panHeight = $("#panFrame").height(); 
-    console.log(this.panWidth); 
-    console.log(this.panHeight); 
+    this.panHeight = $("#panFrame").width();  
 
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 120;
@@ -349,6 +347,17 @@ function loadSVO(listSize){
 
 
 function loadPage(){
+    // check for mobile sizing 
+    if ($(window).width() <= 500){
+        wWidth = $(window).width(); 
+        wHeight = $(window).height();
+        console.log(wWidth);  
+        $("#panDiv").width(.95 * wWidth);
+        $("#panDiv").height(.76 * wHeight); 
+        $("#panFrame").width(.95 * wWidth); 
+        $("#panFrame").height(.76 * wHeight);  
+    }
+
     // create divs for image overlays
     createDivs(pData.size);
 
