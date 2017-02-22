@@ -15,7 +15,6 @@ var FLICKR_API_KEY = process.env.FLICKR_API_KEY;
 //console.log(MAPS_API_KEY); 
 //console.log(FLICKR_API_KEY); 
 
-// TO DO: fix scaling of images
 
 
 app.set('port', (process.env.PORT || 5000)); 
@@ -25,9 +24,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/icon.png')); 
 
 
-// need bodyParser as middleware to handle post requests 
-// body-parser stuff:
-//parses text as URL encoded data ie how its first sent from browser
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
@@ -53,10 +49,7 @@ app.set('view engine', 'ejs');
 // redirects to get  
 app.post('/list_submit', function(req, res){
 
-	// TESTING	
-	//console.log(req.body); 
 
-	// global var for use in flickr call
 	var listElem = ""; 
 	var listElems = "" + req.body.list;
 
@@ -166,8 +159,11 @@ app.get('/palace', function(req, res){
 
 app.get('/', function(req, res){
 	res.render('index.html'); 
-
 });
+
+app.get('/list_input', function(req, res){
+	res.render('list_input.html')
+}); 
 
 // stale posts
 app.get('/list_submit', function(req, res){

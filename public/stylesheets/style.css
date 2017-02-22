@@ -4,6 +4,11 @@ div#main {
 	text-align: center; 
 }
 
+a {
+	display: block;
+	margin: 10px; 
+}
+
 textarea, input {
 	display: block;
 	margin-left: auto; 

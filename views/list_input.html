@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<title>Souvenir: to remember</title>
+
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("form").submit(function(){
+				document.getElementById("listWrapper").innerHTML = '<img src=/images/icon.png />'; 
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="main">
+		<h1><span>SOUVENIR</span></h1>
+		<p id="welcomeMssg">Create Your Memory Palace! <br>
+		Begin by entering in any list of items, separated by new lines. 
+		<br>Press 'Submit' to take the items to your Memory Palace.</p>
+		<form action = '/list_submit' method = 'POST'>
+			<textarea id="listInput" name="list"></textarea>
+			<input id="submit" type="submit" value="Submit">
+		</form> 
+	</div>
+</body>
+</html>
