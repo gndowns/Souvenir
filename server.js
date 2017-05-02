@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var favicon = require('serve-favicon'); 
 var fs = require('fs'); 
 var request = require('request'); 
+var path = require('path'); 
 
 var app = express(); 
 
@@ -15,6 +16,8 @@ var FLICKR_API_KEY = process.env.FLICKR_API_KEY;
 //console.log(MAPS_API_KEY); 
 //console.log(FLICKR_API_KEY); 
 
+// dirs 
+const CONTROLLER_DIR = path.join(__dirname, 'controllers'); 
 
 
 app.set('port', (process.env.PORT || 5000)); 
@@ -43,6 +46,8 @@ app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile); 
 app.set('view engine', 'ejs'); 
 
+
+// TO-DO: add to controllers 
 
 
 
@@ -156,11 +161,6 @@ app.get('/palace', function(req, res){
 	}
 });
 
-
-app.get('/', function(req, res){
-	res.render('index.html'); 
-});
-
 app.get('/list_input', function(req, res){
 	res.render('list_input.html')
 }); 
@@ -168,7 +168,18 @@ app.get('/list_input', function(req, res){
 // stale posts
 app.get('/list_submit', function(req, res){
 	res.render('index.html'); 
-})
+});  
+
+
+// include controllers 
+fs.readdirSync(CONTROLLER_DIR).forEach(function(file) {
+	if(file.substr(-3) == '.js') {
+		// load each controller and pass app to module.exports
+		var route = require(path.join(CONTROLLER_DIR, file)); 
+		route.controller(app); 
+	}
+});
+
 
 app.listen(app.get('port'), function(){
 	console.log("Started on PORT " + app.get('port')); 
