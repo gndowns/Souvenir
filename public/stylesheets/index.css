@@ -1,0 +1,25 @@
+/* Additional styling for index.html */
+#main {
+  margin-left: 170px;
+}
+
+.w3-sidenav {
+  width: 170px;
+  background: black;
+}
+
+/* Circular logo in top-left corner */
+#icon {
+  width: 170px;
+}
+
+/* textarea for entering memory palace items */
+#listInput {
+  width: 600px;
+  height: 120px;
+}
+
+#submit {
+  display: block;
+  margin: 0 auto;
+}
