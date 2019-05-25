@@ -4,10 +4,12 @@ var bodyParser = require("body-parser");
 var favicon = require('serve-favicon'); 
 var fs = require('fs'); 
 var request = require('request'); 
+var dotenv = require('dotenv');
 
 var app = express(); 
 
 // export local vs dev key with palace data 
+dotenv.config()
 var MAPS_API_KEY = process.env.MAPS_API_KEY;  
 var FLICKR_API_KEY = process.env.FLICKR_API_KEY; 
 
